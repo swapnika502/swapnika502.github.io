@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapnika Ambati | Full Stack Developer</title>
+    <style>/* ===== RESET & BASE ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --navy: #1a2744;
+    --navy-light: #243460;
+    --blue: #2563eb;
+    --blue-light: #3b82f6;
+    --white: #ffffff;
+    --gray-bg: #f4f6fb;
+    --gray-text: #6b7280;
+    --dark: #111827;
+    --border: #e5e7eb;
+    --shadow: 0 4px 24px rgba(26,39,68,0.10);
+    --shadow-lg: 0 8px 40px rgba(26,39,68,0.16);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    background: var(--white);
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ===== NAVBAR ===== */
+#navbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+}
+#navbar.scrolled { box-shadow: var(--shadow); }
+
+.nav-container {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+}
+
+.nav-logo {
+    font-size: 1.5rem; font-weight: 800;
+    color: var(--navy);
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.nav-links { display: flex; list-style: none; gap: 2rem; }
+.nav-links a {
+    font-size: 0.92rem; font-weight: 500; color: var(--dark);
+    position: relative; padding-bottom: 4px; transition: color 0.2s;
+}
+.nav-links a::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--blue);
+    transition: width 0.3s;
+}
+.nav-links a:hover { color: var(--blue); }
+.nav-links a:hover::after { width: 100%; }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: 0.3s; }
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white; padding: 0.75rem 1.8rem;
+    border-radius: 50px; font-weight: 600; font-size: 0.95rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+    border: none; cursor: pointer;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.4); }
+
+.btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 2px solid var(--navy); color: var(--navy);
+    padding: 0.75rem 1.8rem; border-radius: 50px;
+    font-weight: 600; font-size: 0.95rem;
+    transition: all 0.2s;
+}
+.btn-outline:hover { background: var(--navy); color: white; transform: translateY(-2px); }
+
+.btn-large { padding: 1rem 2.5rem; font-size: 1.05rem; }
+.full-width { width: 100%; justify-content: center; }
+
+/* ===== SECTIONS ===== */
+section { padding: 90px 0; }
+.section-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section-gray { background: var(--gray-bg); }
+.section-navy { background: linear-gradient(135deg, var(--navy), var(--navy-light)); }
+.text-center { text-align: center; }
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 700;
+    color: var(--navy); margin-bottom: 3rem;
+    text-align: center;
+}
+.section-title span { color: var(--blue); }
+.section-title.white { color: white; }
+.section-title.white span { color: #93c5fd; }
+
+/* ===== HOME ===== */
+#home {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #f4f6fb 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding-top: 68px; position: relative;
+}
+
+.home-container {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 3rem;
+}
+
+.home-text { flex: 1; }
+.greeting { font-size: 1.1rem; color: var(--blue); font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+.name {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem; font-weight: 700; line-height: 1.1;
+    color: var(--navy); margin-bottom: 1rem;
+}
+.name span { color: var(--blue); }
+
+.tagline { font-size: 1.2rem; color: var(--gray-text); font-weight: 500; margin-bottom: 1.2rem; min-height: 1.8rem; }
+.typed { color: var(--blue); font-weight: 600; }
+
+.intro { font-size: 1rem; color: var(--gray-text); line-height: 1.8; margin-bottom: 2rem; max-width: 520px; }
+
+.home-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.home-image { flex: 0 0 380px; display: flex; justify-content: center; }
+.image-wrapper {
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    border: 6px solid white;
+    box-shadow: var(--shadow-lg), 0 0 0 12px rgba(37,99,235,0.1);
+    overflow: hidden;
+    position: relative;
+}
+.image-wrapper img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+.scroll-down {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    animation: bounce 2s infinite;
+}
+.scroll-down a { color: var(--blue); font-size: 1.5rem; }
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ===== ABOUT ===== */
+.about-grid {
+    display: grid; grid-template-columns: 300px 1fr; gap: 3rem; align-items: start;
+}
+
+.about-image {
+    width: 280px; height: 320px;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 4px solid white;
+}
+.about-image img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+.about-content h3 { font-size: 1.6rem; color: var(--navy); margin-bottom: 1rem; font-weight: 700; }
+.about-text { color: var(--gray-text); line-height: 1.8; margin-bottom: 1rem; }
+
+.about-info { margin: 1.5rem 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.info-item { display: flex; align-items: center; gap: 0.8rem; color: var(--dark); font-size: 0.95rem; }
+.info-item i { color: var(--blue); width: 18px; }
+
+.soft-skills { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.soft-skills span {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white; padding: 0.3rem 0.9rem;
+    border-radius: 50px; font-size: 0.82rem; font-weight: 500;
+}
+
+/* ===== EDUCATION TIMELINE ===== */
+.timeline { position: relative; max-width: 800px; margin: 0 auto; }
+.timeline::before {
+    content: ''; position: absolute; left: 30px; top: 0; bottom: 0;
+    width: 2px; background: linear-gradient(to bottom, var(--navy), var(--blue));
+}
+
+.timeline-item {
+    display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.timeline-icon {
+    width: 60px; height: 60px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.1rem; z-index: 1;
+    box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+}
+
+.timeline-content {
+    background: white; padding: 1.5rem 2rem;
+    border-radius: 16px; box-shadow: var(--shadow);
+    flex: 1; border-left: 4px solid var(--blue);
+}
+
+.timeline-year {
+    font-size: 0.82rem; font-weight: 600; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1px;
+}
+.timeline-content h3 { font-size: 1.1rem; color: var(--navy); margin: 0.3rem 0; font-weight: 700; }
+.timeline-content .institute { color: var(--gray-text); font-size: 0.9rem; }
+.timeline-content .score { color: var(--dark); font-size: 0.95rem; margin-top: 0.4rem; }
+
+/* ===== SKILLS ===== */
+.skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+}
+
+.skill-card {
+    background: white; padding: 2rem 1.5rem;
+    border-radius: 20px; box-shadow: var(--shadow);
+    text-align: center; transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 4px solid var(--blue);
+}
+.skill-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.skill-icon {
+    width: 60px; height: 60px; margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.3rem;
+}
+
+.skill-card h3 { font-size: 1rem; color: var(--navy); margin-bottom: 1rem; font-weight: 700; }
+
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+.skill-tags span {
+    background: var(--gray-bg); color: var(--navy);
+    padding: 0.3rem 0.8rem; border-radius: 50px;
+    font-size: 0.82rem; font-weight: 500;
+    border: 1px solid var(--border);
+}
+
+/* ===== PROJECTS ===== */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; }
+
+.project-card {
+    background: white; padding: 2rem;
+    border-radius: 20px; box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-bottom: 4px solid var(--blue);
+}
+.project-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+.project-icon {
+    width: 50px; height: 50px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.2rem;
+}
+
+.project-num { font-size: 2.5rem; font-weight: 800; color: var(--border); font-family: 'Playfair Display', serif; }
+
+.project-card h3 { font-size: 1.2rem; color: var(--navy); margin-bottom: 0.8rem; font-weight: 700; }
+.project-card p { color: var(--gray-text); font-size: 0.93rem; line-height: 1.7; margin-bottom: 1rem; }
+
+.project-features { padding-left: 1.2rem; margin-bottom: 1rem; }
+.project-features li { color: var(--gray-text); font-size: 0.88rem; line-height: 1.8; }
+
+.project-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
+.project-tech span {
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white; padding: 0.25rem 0.8rem;
+    border-radius: 50px; font-size: 0.78rem; font-weight: 600;
+}
+
+.project-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--blue); font-weight: 600; font-size: 0.9rem;
+    transition: gap 0.2s;
+}
+.project-link:hover { gap: 0.8rem; }
+
+/* ===== CERTIFICATIONS ===== */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+.cert-card {
+    background: white; padding: 2rem 1.5rem;
+    border-radius: 20px; box-shadow: var(--shadow);
+    text-align: center; transition: transform 0.3s, box-shadow 0.3s;
+}
+.cert-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.cert-icon {
+    width: 70px; height: 70px; margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1.6rem;
+}
+
+.cert-card h3 { font-size: 1.1rem; color: var(--navy); margin-bottom: 0.4rem; font-weight: 700; }
+.cert-org { color: var(--blue); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.6rem; }
+.cert-desc { color: var(--gray-text); font-size: 0.85rem; line-height: 1.6; margin-bottom: 1rem; }
+
+.cert-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    color: white; padding: 0.3rem 1rem;
+    border-radius: 50px; font-size: 0.78rem; font-weight: 600;
+}
+.cert-badge-green { background: linear-gradient(135deg, #065f46, #059669); }
+
+/* ===== RESUME SECTION ===== */
+.resume-text { color: #93c5fd; font-size: 1.05rem; margin-bottom: 2rem; }
+
+/* ===== CONTACT ===== */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; }
+
+.contact-info h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 0.8rem; font-weight: 700; }
+.contact-info > p { color: var(--gray-text); line-height: 1.7; margin-bottom: 1.5rem; }
+
+.contact-items { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+.contact-item { display: flex; align-items: center; gap: 1rem; }
+
+.contact-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 0.9rem;
+}
+
+.contact-label { font-size: 0.78rem; color: var(--gray-text); font-weight: 500; }
+.contact-item p:last-child { font-size: 0.9rem; color: var(--dark); font-weight: 500; }
+
+.social-links { display: flex; gap: 1rem; }
+.social-links a {
+    width: 44px; height: 44px;
+    background: var(--gray-bg); border: 1px solid var(--border);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: var(--navy); font-size: 1.1rem;
+    transition: all 0.2s;
+}
+.social-links a:hover { background: linear-gradient(135deg, var(--navy), var(--blue)); color: white; border-color: transparent; transform: translateY(-2px); }
+
+/* ===== CONTACT FORM ===== */
+.contact-form { background: var(--gray-bg); padding: 2rem; border-radius: 20px; }
+.form-group { margin-bottom: 1rem; }
+.form-group input,
+.form-group textarea {
+    width: 100%; padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'Inter', sans-serif; font-size: 0.95rem;
+    color: var(--dark); background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+.form-group input:focus,
+.form-group textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.form-group textarea { resize: vertical; }
+
+/* ===== FOOTER ===== */
+footer { background: var(--navy); color: white; padding: 3rem 2rem; text-align: center; }
+.footer-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+.footer-tagline { color: #93c5fd; font-size: 0.88rem; margin-bottom: 1.5rem; }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.footer-links a { color: #cbd5e1; font-size: 0.9rem; transition: color 0.2s; }
+.footer-links a:hover { color: white; }
+.footer-social { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; }
+.footer-social a {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.1); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #cbd5e1; font-size: 1rem; transition: all 0.2s;
+}
+.footer-social a:hover { background: var(--blue); color: white; transform: translateY(-2px); }
+.footer-copy { color: #64748b; font-size: 0.82rem; }
+
+/* ===== ANIMATIONS ===== */
+[data-aos] { opacity: 0; transform: translateY(30px); transition: opacity 0.7s, transform 0.7s; }
+[data-aos].aos-animate { opacity: 1; transform: translateY(0); }
+[data-aos="fade-right"] { transform: translateX(-30px); }
+[data-aos="fade-right"].aos-animate { transform: translateX(0); }
+[data-aos="fade-left"] { transform: translateX(30px); }
+[data-aos="fade-left"].aos-animate { transform: translateX(0); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .home-container { flex-direction: column-reverse; text-align: center; }
+    .home-image { flex: none; }
+    .image-wrapper { width: 260px; height: 260px; }
+    .intro { margin: 0 auto 2rem; }
+    .home-btns { justify-content: center; }
+    .name { font-size: 2.8rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-image { width: 220px; height: 260px; margin: 0 auto; }
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: white; padding: 1rem 2rem; box-shadow: var(--shadow); gap: 1rem; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .section-title { font-size: 1.9rem; }
+    .name { font-size: 2.2rem; }
+    .timeline::before { left: 20px; }
+    .timeline-icon { width: 44px; height: 44px; font-size: 0.9rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+}
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">SA</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HOME -->
+    <section id="home">
+        <div class="home-container">
+            <div class="home-text" data-aos="fade-right">
+                <p class="greeting">Hello, I'm</p>
+                <h1 class="name">Swapnika<br><span>Ambati</span></h1>
+                <p class="tagline"><span class="typed"></span></p>
+                <p class="intro">Motivated Full Stack Developer with hands-on experience building complete web applications using Vue.js, Node.js, Express, and MySQL. Passionate about building scalable, user-friendly applications and writing clean, maintainable code.</p>
+                <div class="home-btns">
+                    <a href="#contact" class="btn-primary">Hire Me</a>
+                    <a href="Swapnika_Resume.docx" download class="btn-outline">
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+            <div class="home-image" data-aos="fade-left">
+                <div class="image-wrapper">
+                    <img src="profile.jpg" alt="Swapnika Ambati">
+                </div>
+            </div>
+        </div>
+        <div class="scroll-down">
+            <a href="#about"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">About <span>Me</span></h2>
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="profile.jpg" alt="Swapnika Ambati">
+                </div>
+                <div class="about-content">
+                    <h3>Full Stack Developer</h3>
+                    <p class="about-text">I am a passionate Full Stack Developer currently pursuing B.Tech in Computer Science & Engineering at NS Raju Institute of Engineering and Technology (2023–2027). I love building scalable and user-friendly web applications.</p>
+                    <p class="about-text">I am open to full-time, internship, and freelance opportunities and available immediately.</p>
+                    <div class="about-info">
+                        <div class="info-item"><i class="fas fa-envelope"></i><span>swapnikaambati79@gmail.com</span></div>
+                        <div class="info-item"><i class="fas fa-phone"></i><span>7698346780</span></div>
+                        <div class="info-item"><i class="fas fa-map-marker-alt"></i><span>Jogimpeta, India</span></div>
+                        <div class="info-item"><i class="fas fa-graduation-cap"></i><span>B.Tech CSE — CGPA: 8.4</span></div>
+                    </div>
+                    <div class="soft-skills">
+                        <span>Communication</span>
+                        <span>Teamwork</span>
+                        <span>Problem-Solving</span>
+                        <span>Quick Learner</span>
+                        <span>Self-Motivated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="section-gray">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">My <span>Education</span></h2>
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="timeline-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2023 – 2027 (Pursuing)</span>
+                        <h3>B.Tech — Computer Science & Engineering</h3>
+                        <p class="institute">NS Raju Institute of Engineering and Technology</p>
+                        <p class="score">CGPA: <strong>8.4</strong></p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="timeline-icon"><i class="fas fa-school"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2021 – 2023</span>
+                        <h3>Intermediate (MPC)</h3>
+                        <p class="institute">Vasu Junior College</p>
+                        <p class="score">GPA: <strong>9.42</strong></p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="timeline-icon"><i class="fas fa-book"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-year">2020</span>
+                        <h3>Secondary School Certificate (SSC)</h3>
+                        <p class="institute">ZPH School, Seethanagaram</p>
+                        <p class="score">GPA: <strong>8.1</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">Technical <span>Skills</span></h2>
+            <div class="skills-grid">
+                <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="skill-icon"><i class="fas fa-desktop"></i></div>
+                    <h3>Frontend</h3>
+                    <div class="skill-tags">
+                        <span>Vue.js</span><span>React JS</span><span>JavaScript</span>
+                    </div>
+                </div>
+                <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="skill-icon"><i class="fas fa-server"></i></div>
+                    <h3>Backend</h3>
+                    <div class="skill-tags">
+                        <span>Node.js</span><span>Express.js</span>
+                    </div>
+                </div>
+                <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="skill-icon"><i class="fas fa-database"></i></div>
+                    <h3>Database</h3>
+                    <div class="skill-tags">
+                        <span>MySQL</span>
+                    </div>
+                </div>
+                <div class="skill-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="skill-icon"><i class="fas fa-code"></i></div>
+                    <h3>Languages</h3>
+                    <div class="skill-tags">
+                        <span>Python</span><span>Basic Java</span>
+                    </div>
+                </div>
+                <div class="skill-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="skill-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Tools</h3>
+                    <div class="skill-tags">
+                        <span>VS Code</span><span>GitHub</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section-gray">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">My <span>Projects</span></h2>
+            <div class="projects-grid">
+                <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-header">
+                        <div class="project-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="project-num">01</div>
+                    </div>
+                    <h3>Student Management System</h3>
+                    <p>A complete full-stack Student Management System with Vue.js frontend and Node.js/Express backend. Features JWT-based authentication with role-based access control for Admin and Student roles.</p>
+                    <ul class="project-features">
+                        <li>JWT authentication with role-based access control</li>
+                        <li>RESTful APIs for full CRUD operations</li>
+                        <li>Manages student records, courses, and grades</li>
+                        <li>Responsive UI using Vuetify component library</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>Vue.js</span><span>Node.js</span><span>MySQL</span><span>JWT</span>
+                    </div>
+                    <a href="https://github.com/swapnika502/https-github.com-swapna-502-Student-management-system1" target="_blank" class="project-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-header">
+                        <div class="project-icon"><i class="fas fa-globe"></i></div>
+                        <div class="project-num">02</div>
+                    </div>
+                    <h3>Basic Web Application</h3>
+                    <p>A fully responsive web application with a clean, modern UI built following best practices with interactive components and smooth animations.</p>
+                    <ul class="project-features">
+                        <li>Fully responsive design for all screen sizes</li>
+                        <li>Interactive components and smooth animations</li>
+                        <li>Cross-browser compatibility and accessibility</li>
+                        <li>Clean, modern UI following best practices</li>
+                    </ul>
+                    <div class="project-tech">
+                        <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
+                    </div>
+                    <a href="https://github.com/swapnika502/Student-management-system" target="_blank" class="project-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">My <span>Certifications</span></h2>
+            <div class="cert-grid">
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="cert-icon"><i class="fas fa-brain"></i></div>
+                    <h3>AI Fundamentals</h3>
+                    <p class="cert-org">IBM SkillsBuild</p>
+                    <p class="cert-desc">Completed through Magic Bus India Foundation & IBM SkillsBuild</p>
+                    <div class="cert-badge">IBM SkillsBuild</div>
+                </div>
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="cert-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Cybersecurity Fundamentals</h3>
+                    <p class="cert-org">IBM SkillsBuild</p>
+                    <p class="cert-desc">Completed through Magic Bus India Foundation & IBM SkillsBuild</p>
+                    <div class="cert-badge">IBM SkillsBuild</div>
+                </div>
+                <div class="cert-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="cert-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Life Skills Certification</h3>
+                    <p class="cert-org">Magic Bus India Foundation</p>
+                    <p class="cert-desc">Completed through Magic Bus India Foundation</p>
+                    <div class="cert-badge cert-badge-green">Magic Bus</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESUME -->
+    <section id="resume" class="section-navy">
+        <div class="section-container text-center" data-aos="fade-up">
+            <h2 class="section-title white">Download My <span>Resume</span></h2>
+            <p class="resume-text">Get a detailed overview of my skills, experience, and projects.</p>
+            <a href="Swapnika_Resume.docx" download class="btn-primary btn-large">
+                <i class="fas fa-download"></i> Download Resume
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="section-container" data-aos="fade-up">
+            <h2 class="section-title">Get In <span>Touch</span></h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Let's Connect!</h3>
+                    <p>I'm open to full-time, internship, and freelance opportunities. Feel free to reach out!</p>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                            <div><p class="contact-label">Phone</p><p>7698346780</p></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <div><p class="contact-label">Email</p><p>swapnikaambati79@gmail.com</p></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div><p class="contact-label">Location</p><p>Jogimpeta, India</p></div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+                            </div>
+                            <div><p class="contact-label">LeetCode</p><a href="https://leetcode.com/u/swapnika502/" target="_blank" style="color:var(--blue);font-weight:600;font-size:0.9rem;">leetcode.com/u/swapnika502</a></div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/swapnika-ambati" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/swapnika502" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://leetcode.com/u/swapnika502/" target="_blank" title="LeetCode" class="leetcode-link">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary full-width">Send Message <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <p class="footer-name">Swapnika Ambati</p>
+            <p class="footer-tagline">Full Stack Developer | Vue.js | Node.js | React | MySQL</p>
+            <div class="footer-social">
+                <a href="https://linkedin.com/in/swapnika-ambati" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/swapnika502" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://leetcode.com/u/swapnika502/" target="_blank">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+                </a>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <p class="footer-copy">© 2026 Swapnika Ambati. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>// ===== NAVBAR SCROLL =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+});
+
+// ===== HAMBURGER MENU =====
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// ===== TYPED TEXT EFFECT =====
+const texts = ['Full Stack Developer', 'Vue.js Developer', 'Node.js Developer', 'React Developer'];
+let textIndex = 0, charIndex = 0, isDeleting = false;
+const typedEl = document.querySelector('.typed');
+
+function type() {
+    const current = texts[textIndex];
+    if (isDeleting) {
+        typedEl.textContent = current.substring(0, charIndex--);
+        if (charIndex < 0) { isDeleting = false; textIndex = (textIndex + 1) % texts.length; setTimeout(type, 400); return; }
+    } else {
+        typedEl.textContent = current.substring(0, charIndex++);
+        if (charIndex > current.length) { isDeleting = true; setTimeout(type, 1500); return; }
+    }
+    setTimeout(type, isDeleting ? 60 : 100);
+}
+type();
+
+// ===== AOS SCROLL ANIMATIONS =====
+function initAOS() {
+    const elements = document.querySelectorAll('[data-aos]');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const delay = entry.target.getAttribute('data-aos-delay') || 0;
+                setTimeout(() => entry.target.classList.add('aos-animate'), parseInt(delay));
+            }
+        });
+    }, { threshold: 0.1 });
+    elements.forEach(el => observer.observe(el));
+}
+initAOS();
+
+// ===== ACTIVE NAV LINK =====
+const sections = document.querySelectorAll('section');
+const navItems = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 100) current = sec.getAttribute('id');
+    });
+    navItems.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current ? 'var(--blue)' : '';
+    });
+});
+
+// ===== CONTACT FORM =====
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    btn.textContent = '✅ Message Sent!';
+    btn.style.background = 'linear-gradient(135deg, #065f46, #059669)';
+    setTimeout(() => {
+        btn.innerHTML = 'Send Message <i class="fas fa-paper-plane"></i>';
+        btn.style.background = '';
+        this.reset();
+    }, 3000);
+});
+</script>
+</body>
+</html>
